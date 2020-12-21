@@ -2,36 +2,11 @@ package aoc2020
 
 import utils.FileScanner
 
-object day12 {
+object day12 extends App {
 
-  def main(args: Array[String]): Unit = {
-
-    lazy val solution1 = movements("src/main/resources/day-12.input").foldLeft(
-      Ship(90, Vec(0, 0))
-    ) { case (ship, (action, amount)) =>
-      ship.move(action, amount)
-    }
-    println(solution1.pos.manhattan)
-
-    def solution2 = movements("src/main/resources/day-12.input").foldLeft(
-      (Vec(0, 0), Vec(10, 1))
-    ) { case ((position, waypoint), (action, amount)) =>
-      action match {
-        case 'N' => (position, waypoint + (north * amount))
-        case 'E' => (position, waypoint + (east * amount))
-        case 'S' => (position, waypoint + (south * amount))
-        case 'W' => (position, waypoint + (west * amount))
-        case 'F' => (position + waypoint * amount, waypoint)
-        case 'L' => (position, waypoint.rotate(-amount))
-        case 'R' => (position, waypoint.rotate(amount))
-      }
-    }
-
-    println(solution2._1.manhattan)
-  }
   case class Vec(x: Int, y: Int) {
-    def +(h: Vec) = Vec(x + h.x, y + h.y)
-    def *(i: Int) = Vec(x * i, y * i)
+    def +(h: Vec): Vec = Vec(x + h.x, y + h.y)
+    def *(i: Int): Vec = Vec(x * i, y * i)
     def rotate(i: Int): Vec = {
       // rotation is around the ship and only 90, 180 or 270 or its negatives
       // the ship is always origen in relation to the vector
@@ -40,7 +15,7 @@ object day12 {
       else if (i == 270 || i == -90) Vec(-y, x)
       else this
     }
-    def manhattan = Math.abs(x) + Math.abs(y)
+    def manhattan: Int = Math.abs(x) + Math.abs(y)
   }
 
   val north = Vec(0, 1)
@@ -64,7 +39,27 @@ object day12 {
     }
   }
 
-  val movements = (x: String) =>
-    new FileScanner(x).lines.map(x => (x.head, x.tail.toInt))
+  val movements = (x: String) => FileScanner(x).lines().map(x => (x.head, x.tail.toInt))
 
+  lazy val solution1 = movements("src/main/resources/day-12.input")
+    .foldLeft(Ship(90, Vec(0, 0))) {
+      case (ship, (action, amount)) => ship.move(action, amount)
+  }
+  println(solution1.pos.manhattan)
+
+  def solution2: (Vec, Vec) = movements("src/main/resources/day-12.input")
+    .foldLeft((Vec(0, 0), Vec(10, 1))) {
+      case ((position, waypoint), (action, amount)) =>
+        action match {
+          case 'N' => (position, waypoint + (north * amount))
+          case 'E' => (position, waypoint + (east * amount))
+          case 'S' => (position, waypoint + (south * amount))
+          case 'W' => (position, waypoint + (west * amount))
+          case 'F' => (position + waypoint * amount, waypoint)
+          case 'L' => (position, waypoint.rotate(-amount))
+          case 'R' => (position, waypoint.rotate(amount))
+        }
+  }
+
+  println(solution2._1.manhattan)
 }

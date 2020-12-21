@@ -10,10 +10,6 @@ object day11 extends App {
     def +(other: Point): Point = Point(x + other.x, y + other.y)
   }
 
-  val t1 = List("#####", "#...#", "#.L.#", "#...#", "##.##").zipWithIndex
-    .flatMap(y => y._1.zipWithIndex.map(x => (Point(x._2, y._2), x._1)))
-    .toMap
-
   @tailrec
   def seatVisible(start: Point, v: Point, area: Map[Point, Char]): Boolean =
     area.get(start + v) match {
@@ -64,13 +60,12 @@ object day11 extends App {
   def show(a: Map[Point, Char]): Unit =
     Range(0, 10).foreach(y => println(Range(0, 10).map(x => a(Point(x, y)))))
   
-    val a = new FileScanner("src/main/resources/day-11.input")
-    .lines()
-    .zipWithIndex
-    .flatMap(y => y._1.zipWithIndex.map(x => (Point(x._2, y._2), x._1)))
-    .toMap
-  
-  
-  println(find(a, modify).count(_._2 == '#'))
-  println(find(a, modifyNew).count(_._2 == '#'))
+  val floorPlan = FileScanner("src/main/resources/day-11.input")
+  .lines()
+  .zipWithIndex
+  .flatMap(y => y._1.zipWithIndex.map(x => (Point(x._2, y._2), x._1)))
+  .toMap
+
+  println(find(floorPlan, modify).count(_._2 == '#'))
+  println(find(floorPlan, modifyNew).count(_._2 == '#'))
 }
