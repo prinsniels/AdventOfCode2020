@@ -10,7 +10,7 @@ object Day21 extends App {
   case class Product(ingredients: Set[String], allergens: Set[String])
 
 
-  val products = new FileScanner("src/main/resources/day-21.input").lines()
+  val products = FileScanner("src/main/resources/day-21.input").lines()
     .map(x => {
       val row = x.split("contains").toList
       Product(wordRegex.findAllIn(row.head).toSet, wordRegex.findAllIn(row.tail.head).toSet)
