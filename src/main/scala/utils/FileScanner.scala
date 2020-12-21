@@ -26,3 +26,7 @@ class FileScanner(path: String) {
   def longLines(): Iterator[Long] = lines().map(_.toLong)
 
 }
+
+object FileScanner {
+  def apply(path: String): FileScanner = new FileScanner(path)
+}
