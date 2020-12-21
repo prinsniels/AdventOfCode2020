@@ -92,7 +92,6 @@ object day04 {
       pid(pp),
       iyr(pp),
       byr(pp) )
-
     println(r)
   }
 }

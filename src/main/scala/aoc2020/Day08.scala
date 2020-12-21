@@ -7,9 +7,9 @@ import scala.annotation.tailrec
 import cats.instances.set
 import scala.util.Success
 
-object Day08 {
+object Day08 extends App {
 
-  val file = new FileScanner("src/main/resources/day-08.input")
+  val file: FileScanner = FileScanner("src/main/resources/day-08.input")
 
   type Routine = Vector[(String, Int)]
 
@@ -51,14 +51,13 @@ object Day08 {
     }
   }
 
-  def main(args: Array[String]): Unit = {
-    println(s"look where it's stuck ${step(program, 0, 0, Set.empty[Int])}")
+  println(s"look where it's stuck ${step(program, 0, 0, Set.empty[Int])}")
 
-    val modifier = alterProgram(program) _
-    val search = for {
-      i <- 0 until program.length
-    } yield step(modifier(i), 0, 0, Set.empty[Int])
-    println(s" result fixed program ${search.find(x => x.isSuccess)}")
+  val modifier: Int => Routine = alterProgram(program)
+  val search = for {
+    i <- program.indices
+  } yield step(modifier(i), 0, 0, Set.empty[Int])
 
-  }
+  println(s" result fixed program ${search.find(x => x.isSuccess)}")
+
 }

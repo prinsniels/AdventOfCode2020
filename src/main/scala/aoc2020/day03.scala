@@ -4,8 +4,8 @@ import utils.FileScanner
 
 import scala.annotation.tailrec
 
-object day03 {
-  val file = new FileScanner("src/main/resources/day-03.input")
+object day03 extends App {
+  val file: FileScanner = FileScanner("src/main/resources/day-03.input")
   case class Point(x: Int, y: Int)
   case class Slope(x: Int, y: Int)
 
@@ -24,7 +24,6 @@ object day03 {
     @tailrec
     def helper(cur: Point, acc: Int): Int = {
       val np = nextPoint(cur, slope, mw)
-
       if (np.y > mh) acc
       else if (forest(np.y)(np.x) == '#') helper(np, acc + 1)
       else helper(np, acc)
@@ -32,13 +31,10 @@ object day03 {
     helper(start, 0)
   }
 
-  def main(args: Array[String]): Unit = {
-    println(countTreesOnRoute(forest, Point(0, 0), Slope(3, 1)))
-
-    println(
-      List(Slope(1, 1), Slope(3, 1), Slope(5, 1), Slope(7, 1), Slope(1, 2))
-        .map(s => countTreesOnRoute(forest, Point(0, 0), s))
-        .product
-    )
-  }
+  println(countTreesOnRoute(forest, Point(0, 0), Slope(3, 1)))
+  println(
+    List(Slope(1, 1), Slope(3, 1), Slope(5, 1), Slope(7, 1), Slope(1, 2))
+      .map(s => countTreesOnRoute(forest, Point(0, 0), s))
+      .product
+  )
 }

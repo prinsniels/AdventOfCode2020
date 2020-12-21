@@ -3,17 +3,18 @@ package aoc2020
 import utils.FileScanner
 import scala.annotation.tailrec
 
-object day10 {
+object day10 extends App {
 
-  val adaptersInBag =
-    new FileScanner("src/main/resources/day-10.input").intLines().toList
+  val adaptersInBag: List[Int] = FileScanner("src/main/resources/day-10.input")
+    .intLines()
+    .toList
 
   @tailrec
   def maxAndDiff(
       adaptors: List[Int],
       cur: Int,
       accDiff: List[Int]
-  ): (Int, Seq[Int]) =
+  ): (Int, List[Int]) =
     adaptors match {
       case Nil                       => (cur + 3, 3 +: accDiff)
       case x :: xs if (x - cur <= 3) => maxAndDiff(xs, x, (x - cur) +: accDiff)
@@ -45,28 +46,26 @@ object day10 {
     }
   }
 
-  def main(args: Array[String]): Unit = {
-    val (highest, diffs) = maxAndDiff(adaptersInBag.sorted, 0, List.empty[Int])
-    println(diffs.count(_ == 1) * diffs.count(_ == 3))
-    // println(getAllPaths(List((List(0), adaptersInBag.sorted)), List.empty).length)
+  val (highest, diffs) = maxAndDiff(adaptersInBag.sorted, 0, List.empty[Int])
+  println(diffs.count(_ == 1) * diffs.count(_ == 3))
+  // println(getAllPaths(List((List(0), adaptersInBag.sorted)), List.empty).length)
 
-    val sorted: List[Int] = 0 +: adaptersInBag.sorted :+ (adaptersInBag.max + 3)
+  val sorted: List[Int] = 0 +: adaptersInBag.sorted :+ (adaptersInBag.max + 3)
 
-    val differences: List[Int] = sorted.tail.zip(sorted).map(x => x._1 - x._2 )
+  val differences: List[Int] = sorted.tail.zip(sorted).map(x => x._1 - x._2 )
 
-    lazy val sequence: LazyList[Long] =
-      0L #:: 1L #:: 1L #:: sequence.sliding(3).to(LazyList).map(_.sum)
+  lazy val sequence: LazyList[Long] =
+    0L #:: 1L #:: 1L #:: sequence.sliding(3).to(LazyList).map(_.sum)
 
-    val solutionB = differences
-      .foldLeft(Seq(1))((acc, e) =>
-        e match {
-          case 1 => (acc.head + 1) +: acc.tail
-          case 3 => 1 +: acc
-        }
-      )
-      .map(sequence)
-      .product
-    
-    println(solutionB)
-  }
+  val solutionB: Long = differences
+    .foldLeft(Seq(1))((acc, e) =>
+      e match {
+        case 1 => (acc.head + 1) +: acc.tail
+        case 3 => 1 +: acc
+      }
+    )
+    .map(sequence)
+    .product
+
+  println(solutionB)
 }

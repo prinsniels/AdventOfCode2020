@@ -3,7 +3,7 @@ package aoc2020
 import utils.FileScanner
 
 object day01 extends App {
-  val file = new FileScanner("src/main/resources/day-01.input")
+  val file = FileScanner("src/main/resources/day-01.input")
 
   lazy val input_data: List[Int] = file.lines().map(_.toInt).toList
 

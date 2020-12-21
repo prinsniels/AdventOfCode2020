@@ -13,9 +13,8 @@ object Day05 extends App{
   val parseRow: String => Int = value => parse('F', 'B')(value)
   val parseSeat: String => Int = value => parse('L', 'R')(value)
 
-  val file = FileScanner("src/main/resources/day-05.input")
-
-  val seatIds = file.lines
+  val seatIds = FileScanner("src/main/resources/day-05.input")
+    .lines()
     .map(_.splitAt(7))
     .map(x => BoardingPass(parseRow(x._1), parseSeat(x._2)).seatId)
     .toVector

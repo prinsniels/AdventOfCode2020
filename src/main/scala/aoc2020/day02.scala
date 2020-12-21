@@ -3,8 +3,8 @@ package  aoc2020
 import  utils.FileScanner
 import java.util.concurrent.Future
 
-object day02 {
-  val file = new FileScanner("src/main/resources/day-02.input")
+object day02 extends App {
+  val file: FileScanner = FileScanner("src/main/resources/day-02.input")
 
   case class Rule(mi: Int, ma: Int, ch: Char, pw: String) {
     val test_1: Boolean = {
@@ -17,7 +17,6 @@ object day02 {
       val r = pw(ma - 1)
       (ch == l || ch == r) && (l != r)
     }
-
   }
 
   def parseRule(a: String): Rule = {
@@ -28,20 +27,17 @@ object day02 {
     }
   }
 
-
   val assignOne: Int = file
     .lines()
     .map(parseRule)
     .count(_.test_1)
+
+  println(assignOne)
 
   val assignTwo: Int = file
     .lines()
     .map(parseRule)
     .count(_.test_2)
 
-  def main(args: Array[String]): Unit = {
-    println(assignOne)
     println(assignTwo)
-  }
-
 }
